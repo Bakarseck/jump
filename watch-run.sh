@@ -5,6 +5,7 @@ run_command() {
     echo "Running command: $@"  # Print the command being executed
     "$@" &                     # Execute the command in the background
     sleep 2                    # Sleep for a short interval to allow the command to start
+    # PID=$(pgrep -P $$)         # Find the process ID of the command
     PID=$(ps aux | grep "/tmp/go" | grep -v grep | awk '{print $2}')  # Find the process ID of the command
     echo "Command PID: $PID"   # Print the process ID of the command
 }
