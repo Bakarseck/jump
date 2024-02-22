@@ -3,11 +3,12 @@ package cli
 import (
 	"encoding/json"
 	"fmt"
-	"jump/internals/models"
-	"jump/internals/utils"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/Bakarseck/jump/internals/models"
+	"github.com/Bakarseck/jump/internals/utils"
 
 	"github.com/spf13/cobra"
 )

@@ -2,10 +2,11 @@ package cli
 
 import (
 	"fmt"
-	"jump/internals/utils"
 	"log"
 	"os"
 	"os/exec"
+
+	"github.com/Bakarseck/jump/internals/utils"
 
 	"github.com/spf13/cobra"
 )
