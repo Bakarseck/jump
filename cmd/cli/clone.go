@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
 
 	"github.com/Bakarseck/jump/internals/models"
 	"github.com/Bakarseck/jump/internals/utils"
@@ -53,8 +52,5 @@ func CloneRepo(cmd *cobra.Command, args []string) {
 }
 
 func GitClone(url string) error {
-	cmd := exec.Command("git", "clone", url)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
+	return utils.ExecCommand("git", "clone", url)
 }
