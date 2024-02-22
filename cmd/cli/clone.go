@@ -12,6 +12,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	Collaborateur string
+)
+
 func ConfigureGit() {
 	utils.LoadEnv(models.HomeDir + "/.env")
 	username := os.Getenv("USERNAME")
@@ -35,6 +39,10 @@ func CloneRepo(cmd *cobra.Command, args []string) {
 	name := args[0]
 
 	username := os.Getenv("USERNAME")
+
+	if Collaborateur != "" {
+		username = Collaborateur
+	}
 
 	url := fmt.Sprintf("https://learn.zone01dakar.sn/git/%v/%v", username, name)
 

@@ -74,6 +74,8 @@ func main() {
 		Run: cli.CloneRepo,
 	}
 
+	cmdClone.Flags().StringVarP(&cli.Collaborateur, "collaborateur", "c", "", "nom du collaborateur")
+
 	// Attache les commandes à l'application principale
 	rootCmd.AddCommand(cmdAdd)
 	rootCmd.AddCommand(cmdJump)
