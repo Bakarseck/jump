@@ -30,5 +30,9 @@ func CommitRepo(cmd *cobra.Command, args []string) {
 		log.Fatalf("Erreur lors du commit : %v", err)
 	}
 
+	if err := utils.ExecCommand("git", "push"); err != nil {
+		log.Fatalf("Erreur lors du push : %v", err)
+	}
+
 	fmt.Println("Commit effectué avec succès.")
 }
