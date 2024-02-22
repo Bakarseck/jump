@@ -76,6 +76,19 @@ func main() {
 
 	cmdClone.Flags().StringVarP(&cli.Collaborateur, "collaborateur", "c", "", "nom du collaborateur")
 
+	var commitCmd = &cobra.Command{
+		Use:   "commit",
+		Short: "Effectue un commit Git",
+		Run:   cli.CommitRepo,
+	}
+
+	// Définition des flags
+	commitCmd.Flags().StringSliceVarP(&cli.Files, "files", "f", []string{}, "Fichiers à inclure dans le commit")
+	commitCmd.Flags().StringVarP(&cli.Message, "message", "m", "Commit automatique", "Message de commit")
+
+	// Ajout de commitCmd à rootCmd si vous avez un objet rootCmd représentant la commande racine de votre application
+	rootCmd.AddCommand(commitCmd)
+
 	// Attache les commandes à l'application principale
 	rootCmd.AddCommand(cmdAdd)
 	rootCmd.AddCommand(cmdJump)
