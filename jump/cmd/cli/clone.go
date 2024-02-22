@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"jump/internals/models"
 	"jump/internals/utils"
 	"log"
 	"os"
@@ -11,7 +12,7 @@ import (
 )
 
 func ConfigureGit() {
-
+	utils.LoadEnv(models.HomeDir + "/.env")
 	username := os.Getenv("USERNAME")
 	email := os.Getenv("EMAIL")
 
@@ -28,6 +29,8 @@ func ConfigureGit() {
 }
 
 func CloneRepo(cmd *cobra.Command, args []string) {
+	utils.LoadEnv(models.HomeDir + "/.env")
+
 	name := args[0]
 
 	username := os.Getenv("USERNAME")
