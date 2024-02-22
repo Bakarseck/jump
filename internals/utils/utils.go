@@ -4,11 +4,12 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"jump/internals/models"
 	"log"
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/Bakarseck/jump/internals/models"
 )
 
 func LoadEnv(path string) error {

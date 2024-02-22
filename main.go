@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"jump/cmd/cli"
-	"jump/internals/models"
-	"jump/internals/utils"
 	"log"
 	"os"
+
+	"github.com/Bakarseck/jump/cmd/cli"
+	"github.com/Bakarseck/jump/internals/models"
+	"github.com/Bakarseck/jump/internals/utils"
 
 	"github.com/spf13/cobra"
 )

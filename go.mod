@@ -1,4 +1,4 @@
-module jump
+module github.com/Bakarseck/jump
 
 go 1.21.1
 
