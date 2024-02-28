@@ -34,10 +34,14 @@ func ConfigureGit() {
 
 func CloneRepo(cmd *cobra.Command, args []string) {
 	utils.LoadEnv(models.HomeDir + "/.env")
-
 	name := args[0]
 
 	username := os.Getenv("USERNAME")
+
+	if username == "" {
+		fmt.Println("Please use: jump -u [username] -e [email]")
+		os.Exit(0)
+	}
 
 	if Collaborateur != "" {
 		username = Collaborateur
