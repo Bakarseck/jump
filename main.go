@@ -86,12 +86,11 @@ func main() {
 		Run:   cli.CommitRepo,
 	}
 
-	var setupZshCmd = &cobra.Command{
-		Use:   "setup-zsh",
-		Short: "Installe et configure Zsh et Oh My Zsh",
-		Long:  `Installe Zsh, Oh My Zsh, et configure les plugins nécessaires pour une meilleure expérience de terminal.`,
-		Run: func(cmd *cobra.Command, args []string) {
-			cli.SetupZsh()
+	var executeScriptCmd = &cobra.Command{
+		Use:   "zsh",
+		Short: "Exécute un script shell spécifique",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return cli.ExecuteShellScript()
 		},
 	}
 
@@ -103,7 +102,7 @@ func main() {
 	rootCmd.AddCommand(cmdJump)
 	rootCmd.AddCommand(cmdClone)
 	rootCmd.AddCommand(commitCmd)
-	rootCmd.AddCommand(setupZshCmd)
+	rootCmd.AddCommand(executeScriptCmd)
 
 	// Exécute l'application
 	if err := rootCmd.Execute(); err != nil {
