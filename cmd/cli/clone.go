@@ -32,8 +32,20 @@ func ConfigureGit() {
 	fmt.Println("Configuration Git mise à jour avec succès.")
 }
 
+func SaveCredentials() {
+	if err := utils.ExecCommand("git", "config", "--global", "credential.helper", "store"); err != nil {
+		fmt.Fprintf(os.Stderr, "Erreur lors de la configuration de Git pour sauvegarder les credentials: %v\n", err)
+	} else {
+		fmt.Println("Git est configuré pour sauvegarder les credentials.")
+	}
+}
+
 func CloneRepo(cmd *cobra.Command, args []string) {
 	utils.LoadEnv(models.HomeDir + "/.env")
+	if len(args) != 1 {
+		fmt.Println("Usage: jump clone -c [collaborateur] [username]")
+		os.Exit(0)
+	}
 	name := args[0]
 
 	username := os.Getenv("USERNAME")

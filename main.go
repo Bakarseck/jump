@@ -30,17 +30,21 @@ func main() {
 		Jump est un gestionnaire de répertoires construit en Go.
 		Il permet d'ajouter et de naviguer facilement entre différents répertoires.`,
 		Run: func(cmd *cobra.Command, args []string) {
-			// Cette logique s'exécute avant chaque commande
 			if username != "" && email != "" {
 				utils.UpdateEnvFile(username, email)
 				utils.LoadEnv(models.HomeDir + "/.env")
 				cli.ConfigureGit()
+			}
+
+			if saveCredentials {
+				cli.SaveCredentials()
 			}
 		},
 	}
 
 	rootCmd.Flags().StringVarP(&email, "email", "e", "", "Votre adresse email")
 	rootCmd.Flags().StringVarP(&username, "username", "u", "", "Votre nom d'utilisateur")
+	rootCmd.Flags().BoolVarP(&saveCredentials, "save", "s", false, "Sauvegarde les credentials dans un fichier")
 
 	// Définit une commande pour ajouter un répertoire
 	var cmdAdd = &cobra.Command{
@@ -82,17 +86,24 @@ func main() {
 		Run:   cli.CommitRepo,
 	}
 
+	var setupZshCmd = &cobra.Command{
+		Use:   "setup-zsh",
+		Short: "Installe et configure Zsh et Oh My Zsh",
+		Long:  `Installe Zsh, Oh My Zsh, et configure les plugins nécessaires pour une meilleure expérience de terminal.`,
+		Run: func(cmd *cobra.Command, args []string) {
+			cli.SetupZsh()
+		},
+	}
+
 	// Définition des flags
 	commitCmd.Flags().StringSliceVarP(&cli.Files, "files", "f", []string{}, "Fichiers à inclure dans le commit")
 	commitCmd.Flags().StringVarP(&cli.Message, "message", "m", "Commit automatique", "Message de commit")
 
-	// Ajout de commitCmd à rootCmd si vous avez un objet rootCmd représentant la commande racine de votre application
-	rootCmd.AddCommand(commitCmd)
-
-	// Attache les commandes à l'application principale
 	rootCmd.AddCommand(cmdAdd)
 	rootCmd.AddCommand(cmdJump)
 	rootCmd.AddCommand(cmdClone)
+	rootCmd.AddCommand(commitCmd)
+	rootCmd.AddCommand(setupZshCmd)
 
 	// Exécute l'application
 	if err := rootCmd.Execute(); err != nil {
@@ -102,6 +113,7 @@ func main() {
 }
 
 var (
-	username string
-	email    string
+	username        string
+	email           string
+	saveCredentials bool
 )
