@@ -10,6 +10,10 @@ chsh -s $(which zsh)
 # Installation d'Oh My Zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
+
+# Configuration du thème Zsh aléatoire
+sed -i 's/ZSH_THEME=".*"/ZSH_THEME="rkj"/' ~/.zshrc
+
 # Installation de zsh-syntax-highlighting
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 

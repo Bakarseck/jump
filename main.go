@@ -94,6 +94,14 @@ func main() {
 		},
 	}
 
+	var addAlias = &cobra.Command{
+		Use:   "alias",
+		Short: "Ajoute des alias spécifiques",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return cli.AddAlias()
+		},
+	}
+
 	// Définition des flags
 	commitCmd.Flags().StringSliceVarP(&cli.Files, "files", "f", []string{}, "Fichiers à inclure dans le commit")
 	commitCmd.Flags().StringVarP(&cli.Message, "message", "m", "Commit automatique", "Message de commit")
@@ -103,6 +111,7 @@ func main() {
 	rootCmd.AddCommand(cmdClone)
 	rootCmd.AddCommand(commitCmd)
 	rootCmd.AddCommand(executeScriptCmd)
+	rootCmd.AddCommand(addAlias)
 
 	// Exécute l'application
 	if err := rootCmd.Execute(); err != nil {
