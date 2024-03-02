@@ -60,3 +60,17 @@ func ExecCommand(name string, args ...string) error {
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
 }
+
+func WriteFile(filePath, fileContentPath string) {
+
+	content, err := os.ReadFile(fileContentPath)
+
+	if err != nil {
+		log.Fatalf("Impossible de lire le fichier : %v", err)
+	}
+
+	err = os.WriteFile(filePath, content, 0644)
+	if err != nil {
+		log.Fatalf("Impossible d'écrire dans le fichier : %v", err)
+	}
+}

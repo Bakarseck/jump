@@ -5,12 +5,19 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"github.com/Bakarseck/jump/internals/utils"
 )
 
 func AddAlias() error {
 
-	scriptPath := "alias.sh"
 	homeDir, err := os.UserHomeDir()
+	scriptPath := homeDir + "/alias.sh"
+
+	fmt.Println(homeDir + "/alias.sh")
+
+	utils.WriteFile(homeDir+"/alias.sh", "alias.sh")
+
 	if err != nil {
 		return fmt.Errorf("impossible de trouver le répertoire personnel: %v", err)
 	}
