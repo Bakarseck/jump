@@ -20,7 +20,7 @@ func ExecuteShellScript() error {
 
 	fmt.Println(scriptPath)
 
-	utils.WriteFile(scriptPath, "alias.sh")
+	utils.WriteFile(scriptPath, "install.sh")
 
 	cmd := exec.Command("bash", scriptPath)
 	err = cmd.Run()
