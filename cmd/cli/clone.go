@@ -13,6 +13,7 @@ import (
 
 var (
 	Collaborateur string
+	Provider      bool
 )
 
 func ConfigureGit() {
@@ -60,6 +61,10 @@ func CloneRepo(cmd *cobra.Command, args []string) {
 	}
 
 	url := fmt.Sprintf("https://learn.zone01dakar.sn/git/%v/%v", username, name)
+
+	if Provider {
+		url = fmt.Sprintf("https://github.com/%v/%v", username, name)
+	}
 
 	if err := GitClone(url); err != nil {
 		log.Fatalf("Erreur lors du clonage du dépôt : %v", err)

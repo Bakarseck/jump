@@ -79,6 +79,7 @@ func main() {
 	}
 
 	cmdClone.Flags().StringVarP(&cli.Collaborateur, "collaborateur", "c", "", "nom du collaborateur")
+	rootCmd.Flags().BoolVarP(&cli.Provider, "github", "g", false, "Provider Github")
 
 	var commitCmd = &cobra.Command{
 		Use:   "commit",
