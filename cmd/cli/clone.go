@@ -63,6 +63,7 @@ func CloneRepo(cmd *cobra.Command, args []string) {
 	url := fmt.Sprintf("https://learn.zone01dakar.sn/git/%v/%v", username, name)
 
 	if Provider {
+		username = os.Getenv("USERNAME_GITHUB")
 		url = fmt.Sprintf("https://github.com/%v/%v", username, name)
 	}
 

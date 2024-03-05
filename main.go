@@ -36,6 +36,11 @@ func main() {
 				cli.ConfigureGit()
 			}
 
+			if usernameGithub != "" {
+				utils.AddUsernameGithub(homeDir, usernameGithub)
+				utils.LoadEnv(models.HomeDir + "/.env")
+			}
+
 			if saveCredentials {
 				cli.SaveCredentials()
 			}
@@ -45,6 +50,7 @@ func main() {
 	rootCmd.Flags().StringVarP(&email, "email", "e", "", "Votre adresse email")
 	rootCmd.Flags().StringVarP(&username, "username", "u", "", "Votre nom d'utilisateur")
 	rootCmd.Flags().BoolVarP(&saveCredentials, "save", "s", false, "Sauvegarde les credentials dans un fichier")
+	rootCmd.Flags().StringVarP(&usernameGithub, "ugithub", "g", "", "Username github")
 
 	// Définit une commande pour ajouter un répertoire
 	var cmdAdd = &cobra.Command{
@@ -79,7 +85,7 @@ func main() {
 	}
 
 	cmdClone.Flags().StringVarP(&cli.Collaborateur, "collaborateur", "c", "", "nom du collaborateur")
-	rootCmd.Flags().BoolVarP(&cli.Provider, "github", "g", false, "Provider Github")
+	cmdClone.Flags().BoolVarP(&cli.Provider, "github", "p", false, "Provider Github")
 
 	var commitCmd = &cobra.Command{
 		Use:   "commit",
@@ -123,6 +129,7 @@ func main() {
 
 var (
 	username        string
+	usernameGithub  string
 	email           string
 	saveCredentials bool
 )
