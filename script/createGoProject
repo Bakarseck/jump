@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Vérifier si un nom de projet a été fourni
+if [ -z "$1" ]; then
+    echo "Veuillez fournir un nom de projet."
+    exit 1
+fi
+
+PROJECT_NAME=$1
+
+# Créer le répertoire du projet
+mkdir $PROJECT_NAME
+cd $PROJECT_NAME
+
+# Initialiser le module Go
+go mod init $PROJECT_NAME
+
+# Créer le fichier main.go
+cat <<EOF > main.go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Bienvenue dans le projet $PROJECT_NAME!")
+}
+EOF
+
+# Créer la structure du dossier internals
+mkdir -p internals/{models,handlers,utils}
+
+# Créer les fichiers de package de base pour models, handlers, et utils
+for pkg in models handlers utils; do
+    cat <<EOF > internals/$pkg/$pkg.go
+package $pkg
+
+// Ce fichier contient le code de base pour le package $pkg.
+EOF
+done
+
+echo "Projet $PROJECT_NAME créé avec succès."

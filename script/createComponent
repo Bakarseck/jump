@@ -1,0 +1,28 @@
+#!/bin/bash
+
+nom_composant=$1
+
+# Créer un dossier pour le composant
+mkdir "$nom_composant"
+
+nom_composant_capitalise="$(tr '[:lower:]' '[:upper:]' <<< ${nom_composant:0:1})${nom_composant:1}"
+
+# Créer le fichier JSX
+cat <<EOF >"$nom_composant/$nom_composant_capitalise.jsx"
+import React from 'react';
+import './$nom_composant.css';
+
+export default function $nom_composant_capitalise() {
+  return (
+    <div className="$nom_composant">
+      <h1>$nom_composant_capitalise</h1>
+    </div>
+  );
+}
+
+EOF
+
+# Créer le fichier CSS
+echo "/* Styles pour $nom_composant */" > "$nom_composant/$nom_composant.css"
+
+echo "Composant $nom_composant créé avec succès."

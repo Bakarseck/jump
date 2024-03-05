@@ -1,0 +1,26 @@
+Alias Git :
+- `ga` : Raccourci pour `git add`.
+- `gc` : Raccourci pour `git clone`.
+- `gcm`: Raccourci pour `git commit -m`
+- `gs` : Raccourci pour `git status`.
+- `grh`: Raccourci pour `git reset --hard`
+- `gp` : Raccourci pour `git push`.
+- `gpl` : Raccourci pour `git pull`.
+- `gb` : Raccourci pour `git branch`.
+- `gco` : Raccourci pour `git checkout`.
+- `gm` : Raccourci pour `git merge`.
+- `gd` : Raccourci pour `git diff`.
+- `gl` : Raccourci pour `git log`.
+- `gsh` : Raccourci pour `git stash`.
+
+Alias Docker :
+- `d` : Raccourci pour `docker`.
+- `dc` : Raccourci pour `docker-compose`.
+- `di` : Raccourci pour `docker images`.
+- `dps` : Raccourci pour `docker ps`.
+- `dpsa` : Raccourci pour `docker ps -a`.
+- `drm` : Raccourci pour `docker rm`.
+- `drmi` : Raccourci pour `docker rmi`.
+
+Alias divers :
+- `cls` : Raccourci pour effacer l'écran.

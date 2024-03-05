@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# Vérifier s'il y a un argument pour le nom du projet
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <nom-du-projet>"
+    exit 1
+fi
+
+# Créer un répertoire pour le projet
+mkdir $1
+cd $1
+
+# Créer les fichiers HTML, CSS et JavaScript
+touch index.html style.css script.js
+
+# Ajouter le contenu HTML par défaut
+cat <<EOL > index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Projet</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Bienvenue dans mon projet</h1>
+    <p>Ceci est un projet HTML de base avec des fichiers CSS et JavaScript liés.</p>
+    <script src="script.js"></script>
+</body>
+</html>
+EOL
+
+# Ajouter du contenu CSS par défaut
+cat <<EOL > style.css
+/* Mettez vos styles CSS ici */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    color: #333;
+}
+
+p {
+    color: #666;
+}
+EOL
+
+# Ajouter du contenu JavaScript par défaut
+cat <<EOL > script.js
+// Mettez votre code JavaScript ici
+document.addEventListener('DOMContentLoaded', function() {
+    // Votre code ici...
+});
+EOL
+
+echo "Projet HTML avec les fichiers index.html, style.css et script.js créé avec succès."

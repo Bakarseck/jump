@@ -1,0 +1,6 @@
+for (( i = 1; i <= 30; i++ )); do
+    echo "Nombre : $i"
+    wget -v "https://www.islamicnet.com/online_quran_pdf/Holy-Quran-Para-$i.pdf"
+done
+
+

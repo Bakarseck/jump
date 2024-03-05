@@ -1,0 +1,23 @@
+#!/bin/bash
+
+nom_page=$1
+
+# Créer un dossier pour le composant
+mkdir "$nom_page"
+
+nom_page_capitalise="$(tr '[:lower:]' '[:upper:]' <<< ${nom_page:0:1})${nom_page:1}"
+
+# Créer le fichier JSX
+cat <<EOF >"$nom_page/page.js"
+
+export default function $nom_page_capitalise() {
+  return (
+    <div className="$nom_page">
+      <h1>$nom_page_capitalise</h1>
+    </div>
+  );
+}
+
+EOF
+
+echo "page $nom_page créé avec succès."
