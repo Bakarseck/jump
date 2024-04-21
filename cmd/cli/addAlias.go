@@ -12,11 +12,24 @@ import (
 func AddAlias() error {
 
 	homeDir, err := os.UserHomeDir()
-	scriptPath := homeDir + "/alias.sh"
 
-	fmt.Println(homeDir + "/alias.sh")
+	githubScriptUrl := "https://raw.githubusercontent.com/Bakarseck/jump/master/alias.sh"
 
-	utils.WriteFile(homeDir+"/alias.sh", "alias.sh")
+	if err != nil {
+		return fmt.Errorf("impossible de trouver le répertoire personnel: %v", err)
+	}
+
+	scriptPath, err := utils.DownloadFile(githubScriptUrl, homeDir)
+
+	if err != nil {
+		return fmt.Errorf("erreur lors du téléchargement du script: %w", err)
+	}
+
+	// Rend le script exécutable.
+	err = os.Chmod(scriptPath, 0755)
+	if err != nil {
+		return fmt.Errorf("erreur lors du changement des permissions du fichier: %w", err)
+	}
 
 	if err != nil {
 		return fmt.Errorf("impossible de trouver le répertoire personnel: %v", err)

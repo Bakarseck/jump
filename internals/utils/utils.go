@@ -4,9 +4,12 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
+	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	"github.com/Bakarseck/jump/internals/models"
@@ -73,4 +76,32 @@ func WriteFile(filePath, fileContentPath string) {
 	if err != nil {
 		log.Fatalf("Impossible d'écrire dans le fichier : %v", err)
 	}
+}
+
+func DownloadFile(url string, destDir string) (string, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return "", fmt.Errorf("erreur lors de la création de la requête HTTP: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("mauvaise réponse du serveur: %s", resp.Status)
+	}
+
+	fileName := filepath.Base(url)
+	filePath := filepath.Join(destDir, fileName)
+
+	out, err := os.Create(filePath)
+	if err != nil {
+		return "", fmt.Errorf("impossible de créer le fichier: %w", err)
+	}
+	defer out.Close()
+
+	_, err = io.Copy(out, resp.Body)
+	if err != nil {
+		return "", fmt.Errorf("erreur lors de la copie des données: %w", err)
+	}
+
+	return filePath, nil
 }

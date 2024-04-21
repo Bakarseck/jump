@@ -12,15 +12,23 @@ func ExecuteShellScript() error {
 
 	homeDir, err := os.UserHomeDir()
 
+	githubScriptUrl := "https://raw.githubusercontent.com/Bakarseck/jump/master/install.sh"
+
 	if err != nil {
 		return fmt.Errorf("impossible de trouver le répertoire personnel: %v", err)
 	}
 
-	scriptPath := homeDir + "/install.sh"
+	scriptPath, err := utils.DownloadFile(githubScriptUrl, homeDir)
 
-	fmt.Println(scriptPath)
+	if err != nil {
+		return fmt.Errorf("erreur lors du téléchargement du script: %w", err)
+	}
 
-	utils.WriteFile(scriptPath, "install.sh")
+	// Rend le script exécutable.
+	err = os.Chmod(scriptPath, 0755)
+	if err != nil {
+		return fmt.Errorf("erreur lors du changement des permissions du fichier: %w", err)
+	}
 
 	cmd := exec.Command("bash", scriptPath)
 	err = cmd.Run()
