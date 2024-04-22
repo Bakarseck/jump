@@ -8,6 +8,35 @@ import (
 	"strings"
 )
 
+func AddToken(homeDir, token string) {
+	envPath := homeDir + "/.env"
+	LoadEnv(envPath)
+
+	// Charge le contenu du fichier .env
+	content, err := os.ReadFile(envPath)
+	if err != nil {
+		log.Fatalf("Erreur lors de la lecture du fichier .env : %v", err)
+	}
+
+	// Assumez que `EncryptString` est votre fonction de chiffrement
+	// et que `secretKey` est votre clé secrète définie ailleurs dans votre configuration
+	key := os.Getenv("SECRET_KEY")
+	encryptedUsername, err := EncryptString(token, key)
+	if err != nil {
+		log.Fatalf("Erreur lors du chiffrement du username : %v", err)
+	}
+
+	// Mise à jour ou ajout de la variable USERNAME_GITHUB dans le .env
+	updatedContent := updateOrAddEnvVar(string(content), "GITHUB_TOKEN", encryptedUsername)
+
+	// Écriture du nouveau contenu dans le fichier .env
+	if err := os.WriteFile(envPath, []byte(updatedContent), 0644); err != nil {
+		log.Fatalf("Erreur lors de l'écriture dans le fichier .env : %v", err)
+	}
+
+	log.Println("Le token GitHub chiffré a été enregistré avec succès dans le fichier .env.")
+}
+
 func AddUsernameGithub(homeDir, usernameGithub string) {
 	envPath := homeDir + "/.env"
 	content, err := readEnvFile(envPath)

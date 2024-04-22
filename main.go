@@ -44,6 +44,16 @@ func main() {
 			if saveCredentials {
 				cli.SaveCredentials()
 			}
+
+			if GITHUB_TOKEN != "" {
+				utils.LoadEnv(models.HomeDir + "/.env")
+				utils.AddToken(homeDir, GITHUB_TOKEN)
+			}
+
+			if decrypt != "" {
+				utils.LoadEnv(models.HomeDir + "/.env")
+				cli.GetToken(decrypt)
+			}
 		},
 	}
 
@@ -51,6 +61,8 @@ func main() {
 	rootCmd.Flags().StringVarP(&username, "username", "u", "", "Votre nom d'utilisateur")
 	rootCmd.Flags().BoolVarP(&saveCredentials, "save", "s", false, "Sauvegarde les credentials dans un fichier")
 	rootCmd.Flags().StringVarP(&usernameGithub, "ugithub", "g", "", "Username github")
+	rootCmd.Flags().StringVarP(&GITHUB_TOKEN, "token", "t", "", "Save votre github")
+	rootCmd.Flags().StringVarP(&decrypt, "decrypt", "d", "", "Decrypte une chaine")
 
 	// Définit une commande pour ajouter un répertoire
 	var cmdAdd = &cobra.Command{
@@ -109,6 +121,39 @@ func main() {
 		},
 	}
 
+	var createCmd = &cobra.Command{
+		Use:   "create",
+		Short: "Crée un nouveau dépôt sur GitHub",
+		Args:  cobra.ExactArgs(1),
+		Run:   cli.CreateRepo,
+	}
+
+	createCmd.Flags().BoolVarP(&cli.Private, "public", "p", false, "Private or Public")
+
+	var addCollabCmd = &cobra.Command{
+		Use:   "add-collab",
+		Short: "Add a collaborator to a repository",
+		Args:  cobra.ExactArgs(2),
+		Run:   cli.AddCollab,
+	}
+	rootCmd.AddCommand(addCollabCmd)
+
+	var changeVisibilityCmd = &cobra.Command{
+		Use:   "change-visibility",
+		Short: "Change the visibility of the repository",
+		Args:  cobra.ExactArgs(1),
+		Run:   cli.ChangeVisibility,
+	}
+	rootCmd.AddCommand(changeVisibilityCmd)
+
+	var deleteRepoCmd = &cobra.Command{
+		Use:   "delete-repo",
+		Short: "Delete a repository",
+		Args:  cobra.ExactArgs(1),
+		Run:   cli.DeleteRepo,
+	}
+	rootCmd.AddCommand(deleteRepoCmd)
+
 	// Définition des flags
 	commitCmd.Flags().StringSliceVarP(&cli.Files, "files", "f", []string{}, "Fichiers à inclure dans le commit")
 	commitCmd.Flags().StringVarP(&cli.Message, "message", "m", "Commit automatique", "Message de commit")
@@ -119,6 +164,7 @@ func main() {
 	rootCmd.AddCommand(commitCmd)
 	rootCmd.AddCommand(executeScriptCmd)
 	rootCmd.AddCommand(addAlias)
+	rootCmd.AddCommand(createCmd)
 
 	// Exécute l'application
 	if err := rootCmd.Execute(); err != nil {
@@ -131,5 +177,7 @@ var (
 	username        string
 	usernameGithub  string
 	email           string
+	GITHUB_TOKEN    string
+	decrypt         string
 	saveCredentials bool
 )
