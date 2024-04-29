@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
+	"path/filepath"
 
 	"github.com/Bakarseck/jump/cmd/cli"
 	"github.com/Bakarseck/jump/internals/models"
@@ -154,10 +156,80 @@ func main() {
 	}
 	rootCmd.AddCommand(deleteRepoCmd)
 
+	var examCmd = &cobra.Command{
+		Use:   "exam",
+		Short: "Creates a new Rust library and sets up the environment",
+		Long: `This command creates a new Rust library project using 'cargo new --lib',
+			   downloads a README.md, and performs additional setup.`,
+		Args: cobra.ExactArgs(1), // Ensures exactly one argument is passed
+		Run: func(cmd *cobra.Command, args []string) {
+			libName := args[0]
+			err := cli.CreateNewRustLib(libName)
+			if err != nil {
+				fmt.Printf("Error creating Rust library: %v\n", err)
+				return
+			}
+
+			readmeURL := fmt.Sprintf("https://raw.githubusercontent.com/01-edu/public/master/subjects/%s/README.md", libName)
+			readmePath := filepath.Join(libName, "README.md")
+
+			err = cli.DownloadFile(readmeURL, readmePath)
+			if err != nil {
+				fmt.Printf("Error downloading README.md: %v\n", err)
+				return
+			}
+
+			fmt.Println("New Rust library created successfully with README.md downloaded.")
+		},
+	}
+
+	var testCmd = &cobra.Command{
+		Use:   "test [projectName]",
+		Short: "Tests a Rust project",
+		Long: `This command navigates to the Rust project directory, downloads the test file,
+			   and runs 'cargo test' for the project.`,
+		Args: cobra.ExactArgs(1), // Ensures exactly one argument is passed
+		Run: func(cmd *cobra.Command, args []string) {
+			projectName := args[0]
+			projectPath := filepath.Join(projectName, "src") // Assuming the src directory is at a specific path
+
+			// Change to the project directory
+			err := os.Chdir(projectPath)
+			if err != nil {
+				fmt.Printf("Error changing directory to %s: %v\n", projectPath, err)
+				return
+			}
+
+			// Define the URL for the test main.rs file
+			testFileURL := fmt.Sprintf("https://raw.githubusercontent.com/rgilles42/piscine-rust/main/tests/%s_test/src/main.rs", projectName)
+			testFilePath := filepath.Join("main.rs") // Path where the test file should be saved
+
+			// Download the test main.rs file
+			err = cli.DownloadFile(testFileURL, testFilePath)
+			if err != nil {
+				fmt.Printf("Error downloading test file: %v\n", err)
+				return
+			}
+
+			// Run cargo test in the current directory
+			_cmd := exec.Command("cargo", "test")
+			_cmd.Stdout = os.Stdout
+			_cmd.Stderr = os.Stderr
+			err = _cmd.Run()
+			if err != nil {
+				fmt.Printf("Error running cargo test: %v\n", err)
+				return
+			}
+
+			fmt.Println("Tests executed successfully.")
+		},
+	}
+
 	// Définition des flags
 	commitCmd.Flags().StringSliceVarP(&cli.Files, "files", "f", []string{}, "Fichiers à inclure dans le commit")
 	commitCmd.Flags().StringVarP(&cli.Message, "message", "m", "Commit automatique", "Message de commit")
 
+	rootCmd.AddCommand(testCmd)
 	rootCmd.AddCommand(cmdAdd)
 	rootCmd.AddCommand(cmdJump)
 	rootCmd.AddCommand(cmdClone)
@@ -165,6 +237,7 @@ func main() {
 	rootCmd.AddCommand(executeScriptCmd)
 	rootCmd.AddCommand(addAlias)
 	rootCmd.AddCommand(createCmd)
+	rootCmd.AddCommand(examCmd)
 
 	// Exécute l'application
 	if err := rootCmd.Execute(); err != nil {
