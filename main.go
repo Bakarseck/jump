@@ -157,7 +157,7 @@ func main() {
 	rootCmd.AddCommand(deleteRepoCmd)
 
 	var examCmd = &cobra.Command{
-		Use:   "exam",
+		Use:   "exercice",
 		Short: "Creates a new Rust library and sets up the environment",
 		Long: `This command creates a new Rust library project using 'cargo new --lib',
 			   downloads a README.md, and performs additional setup.`,
