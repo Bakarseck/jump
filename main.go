@@ -14,6 +14,51 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var usernames = []string{
+	"Mirak29",
+	"mohaskii",
+	"AbubakrSaadiq",
+	"NiangOos",
+	"Nixa001",
+	"superMass14",
+	"steb1",
+	"Aziz-TheDarkCode",
+	"elhadjiibrahima",
+	"OumarLAM",
+	"dioufra",
+	"mouhasup",
+	"pro12x",
+	"biramendoye",
+	"ahbarry07",
+	"Whoisozdem",
+	"seydi-ahmed",
+	"djiby26",
+	"SSMM0498",
+	"papa-abdoulaye-diop",
+	"jeebrail",
+	"Bakarseck",
+	"moussadiengsala",
+	"Tafouiny",
+	"aadieng100",
+	"yayediop2",
+	"alpapie",
+	"vincefelix",
+	"munikmind",
+	"bayerane",
+	"ElieJnr",
+	"louisisaacdiouf",
+	"lamabalde",
+	"devousmane",
+	"coulou800",
+	"Yoows",
+	"Madike10",
+	"galsen-boy",
+	"serignefallou-18",
+	"lino-smart",
+	"Cheibany",
+	"Badoulahi8",
+}
+
 func main() {
 
 	homeDir, err := os.UserHomeDir()
@@ -78,6 +123,52 @@ func main() {
 
 		Run: cli.Add,
 	}
+
+	var followCmd = &cobra.Command{
+		Use:   "follow [username]",
+		Short: "Follow a GitHub user",
+		Args:  cobra.ExactArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+			username := args[0]
+			if err := cli.FollowUser(username); err != nil {
+				fmt.Printf("Failed to follow user %s: %v\n", username, err)
+				os.Exit(1)
+			}
+			fmt.Println("Successfully followed user:", username)
+		},
+	}
+
+	var followZone = &cobra.Command{
+		Use:   "followZone",
+		Short: "Follow user who send theirs username github",
+		Run: func(cmd *cobra.Command, args []string) {
+			for _, v := range usernames {
+				if err := cli.FollowUser(v); err != nil {
+					fmt.Printf("Failed to follow user %s: %v\n", username, err)
+					continue
+				}
+				fmt.Println("Successfully followed user:", v)
+			}
+		},
+	}
+
+	rootCmd.AddCommand(followCmd)
+	rootCmd.AddCommand(followZone)
+
+	var getRepoInfoCmd = &cobra.Command{
+		Use:   "get-repo-info [repo]",
+		Short: "Get information about a specific GitHub repository",
+		Args:  cobra.ExactArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+			repo := args[0]
+			if err := cli.GetRepoInfo(repo); err != nil {
+				fmt.Printf("Failed to get info for repository %s: %v\n", repo, err)
+				os.Exit(1)
+			}
+		},
+	}
+
+	rootCmd.AddCommand(getRepoInfoCmd)
 
 	// Définit une commande pour changer de répertoire
 	var cmdJump = &cobra.Command{
