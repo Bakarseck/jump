@@ -101,6 +101,12 @@ func main() {
 				utils.LoadEnv(models.HomeDir + "/.env")
 				cli.GetToken(decrypt)
 			}
+
+			if generateKey {
+				secretKey := utils.GenerateSecretKey()       // Génère la clé
+				utils.AddEnvFile("SECRET_KEY", secretKey) // Enregistre la clé dans le fichier .env
+				fmt.Println("La clé secrète a été générée et enregistrée avec succès.")
+			}
 		},
 	}
 
@@ -110,6 +116,7 @@ func main() {
 	rootCmd.Flags().StringVarP(&usernameGithub, "ugithub", "g", "", "Username github")
 	rootCmd.Flags().StringVarP(&GITHUB_TOKEN, "token", "t", "", "Save votre github")
 	rootCmd.Flags().StringVarP(&decrypt, "decrypt", "d", "", "Decrypte une chaine")
+	rootCmd.PersistentFlags().BoolVarP(&generateKey, "generate-key", "k", false, "Génère et enregistre une nouvelle SECRET_KEY dans le fichier .env")
 
 	// Définit une commande pour ajouter un répertoire
 	var cmdAdd = &cobra.Command{
@@ -344,4 +351,5 @@ var (
 	GITHUB_TOKEN    string
 	decrypt         string
 	saveCredentials bool
+	generateKey     bool
 )

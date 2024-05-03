@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -104,4 +105,59 @@ func DownloadFile(url string, destDir string) (string, error) {
 	}
 
 	return filePath, nil
+}
+
+// GenerateSecretKey génère une clé secrète en utilisant OpenSSL et renvoie cette clé.
+func GenerateSecretKey() string {
+	cmd := exec.Command("openssl", "rand", "-hex", "32")
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	if err != nil {
+		log.Fatalf("Erreur lors de la génération de la clé secrète : %v", err)
+	}
+	// La sortie contient la clé générée, on retire les espaces blancs inutiles (comme les sauts de ligne)
+	return out.String()
+}
+
+func AddEnvFile(key, value string) {
+	envPath := models.HomeDir + "/.env"
+	envMap := make(map[string]string)
+
+	// Load existing .env content into map
+	file, err := os.Open(envPath)
+	if err != nil {
+		if !os.IsNotExist(err) {
+			log.Fatalf("Erreur lors de l'ouverture du fichier .env : %v", err)
+		}
+	} else {
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			line := scanner.Text()
+			parts := strings.SplitN(line, "=", 2)
+			if len(parts) == 2 {
+				envMap[parts[0]] = parts[1]
+			}
+		}
+		file.Close()
+	}
+
+	// Update or add the new key-value pair
+	envMap[key] = value
+
+	// Write the updated content back to the .env file
+	file, err = os.Create(envPath)
+	if err != nil {
+		log.Fatalf("Erreur lors de la création du fichier .env : %v", err)
+	}
+	defer file.Close()
+
+	writer := bufio.NewWriter(file)
+	for k, v := range envMap {
+		_, err := writer.WriteString(fmt.Sprintf("%s=%s\n", k, v))
+		if err != nil {
+			log.Fatalf("Erreur lors de l'écriture dans le fichier .env : %v", err)
+		}
+	}
+	writer.Flush()
 }
