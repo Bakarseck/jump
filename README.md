@@ -6,7 +6,24 @@ Jump est un gestionnaire de répertoires flexible et rapide développé en Go. I
 
 ## Installation
 
-(Instructions d'installation pour votre application.)
+Pour installer:
+    ```bash
+        go install github.com/Bakarseck/jump@latest
+    ```
+
+    Après installation, si tu as ```Not Found```, il faut ajouter le le chemin des binaires go dans le path avec cette commande, il faut ouvrir le fichier `.bashrc` ou `.zshrc` :
+
+    ```bash
+        export PATH=$PATH:$(go env GOPATH)/bin
+    ```
+
+    après mettre à jour le .bashrc avec 
+
+    ```bash
+        source ~/.bashrc
+    ```    
+
+
 
 ## Utilisation
 
