@@ -19,7 +19,7 @@ import (
 func LoadEnv(path string) error {
 	file, err := os.Open(path)
 	if err != nil {
-		log.Println(err.Error())
+		log.Fatalln(err.Error())
 	}
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
@@ -110,7 +110,6 @@ func DownloadFile(url string, destDir string) (string, error) {
 	return filePath, nil
 }
 
-// GenerateSecretKey génère une clé secrète en utilisant OpenSSL et renvoie cette clé.
 func GenerateSecretKey() string {
 	cmd := exec.Command("openssl", "rand", "-hex", "32")
 	var out bytes.Buffer
@@ -127,7 +126,6 @@ func AddEnvFile(key, value string) {
 	envPath := models.HomeDir + "/.env"
 	envMap := make(map[string]string)
 
-	// Load existing .env content into map
 	file, err := os.Open(envPath)
 	if err != nil {
 		if !os.IsNotExist(err) {
@@ -145,10 +143,8 @@ func AddEnvFile(key, value string) {
 		file.Close()
 	}
 
-	// Update or add the new key-value pair
 	envMap[key] = value
 
-	// Write the updated content back to the .env file
 	file, err = os.Create(envPath)
 	if err != nil {
 		log.Fatalf("Erreur lors de la création du fichier .env : %v", err)

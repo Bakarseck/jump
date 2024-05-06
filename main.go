@@ -85,7 +85,7 @@ func main() {
 			}
 
 			if usernameGithub != "" {
-				utils.AddUsernameGithub(homeDir, usernameGithub)
+				utils.AddEnvFile("USERNAME_GITHUB", usernameGithub)
 				utils.LoadEnv(models.HomeDir + "/.env")
 			}
 
@@ -94,18 +94,12 @@ func main() {
 			}
 
 			if GITHUB_TOKEN != "" {
-				utils.LoadEnv(models.HomeDir + "/.env")
 				utils.AddToken(homeDir, GITHUB_TOKEN)
 			}
 
-			if decrypt != "" {
-				utils.LoadEnv(models.HomeDir + "/.env")
-				cli.GetToken(decrypt)
-			}
-
 			if generateKey {
-				secretKey := utils.GenerateSecretKey()       // Génère la clé
-				utils.AddEnvFile("SECRET_KEY", secretKey) // Enregistre la clé dans le fichier .env
+				secretKey := utils.GenerateSecretKey()
+				utils.AddEnvFile("SECRET_KEY", secretKey)
 				fmt.Println("La clé secrète a été générée et enregistrée avec succès.")
 			}
 		},
@@ -116,7 +110,6 @@ func main() {
 	rootCmd.Flags().BoolVarP(&saveCredentials, "save", "s", false, "Sauvegarde les credentials dans un fichier")
 	rootCmd.Flags().StringVarP(&usernameGithub, "ugithub", "g", "", "Username github")
 	rootCmd.Flags().StringVarP(&GITHUB_TOKEN, "token", "t", "", "Save votre github")
-	rootCmd.Flags().StringVarP(&decrypt, "decrypt", "d", "", "Decrypte une chaine")
 	rootCmd.PersistentFlags().BoolVarP(&generateKey, "generate-key", "k", false, "Génère et enregistre une nouvelle SECRET_KEY dans le fichier .env")
 
 	// Définit une commande pour ajouter un répertoire
@@ -350,7 +343,6 @@ var (
 	usernameGithub  string
 	email           string
 	GITHUB_TOKEN    string
-	decrypt         string
 	saveCredentials bool
 	generateKey     bool
 )
