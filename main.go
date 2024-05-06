@@ -78,7 +78,8 @@ func main() {
 		Il permet d'ajouter et de naviguer facilement entre différents répertoires.`,
 		Run: func(cmd *cobra.Command, args []string) {
 			if username != "" && email != "" {
-				utils.UpdateEnvFile(username, email)
+				utils.AddEnvFile("USERNAME", username)
+				utils.AddEnvFile("EMAIL", email)
 				utils.LoadEnv(models.HomeDir + "/.env")
 				cli.ConfigureGit()
 			}

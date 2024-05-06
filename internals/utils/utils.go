@@ -25,8 +25,11 @@ func LoadEnv(path string) error {
 	for scanner.Scan() {
 		line := scanner.Text()
 		parts := strings.SplitN(line, "=", 2)
+		if len(parts) == 1 {
+			continue
+		}
 		if len(parts) != 2 {
-			log.Println("Your env file must be set")
+			log.Fatalf("Erreur lors de l'ouverture du fichier .env : %v", err)
 		}
 		key := parts[0]
 		value := parts[1]
