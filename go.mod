@@ -1,5 +1,5 @@
 module github.com/Bakarseck/jump
-go 1.21.1
+go 1.23
 
 require (
 	github.com/codeskyblue/go-sh v0.0.0-20200712050446-30169cf553fe
