@@ -10,4 +10,8 @@ COPY . .
 
 RUN go build -o jump
 
+FROM scratch
+
+COPY --from=0 /app/jump /jump
+
 CMD ["./jump"]
