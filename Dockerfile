@@ -8,7 +8,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o jump
+RUN go build -o jump -ldflags '-extldflags "-static"'
 
 FROM scratch
 
